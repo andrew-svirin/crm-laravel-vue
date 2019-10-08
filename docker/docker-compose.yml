@@ -1,0 +1,52 @@
+version: "3"
+
+services:
+  postgresql:
+    container_name: 'postgresql'
+    image: postgres:10-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./data/postgresql/data:/var/lib/postgresql/data
+    networks:
+      - app-tier
+
+  php-fpm:
+    container_name: 'php-fpm'
+    build:
+      context: ./configs/php-fpm
+      dockerfile: Dockerfile
+    links:
+      - postgresql
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+      - '52022:22'
+    volumes:
+      - ../:/var/www
+      - ./data/composer:/root/.composer
+      - ./configs/php-fpm/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - app-tier
+
+  nginx:
+    container_name: 'nginx'
+    image: nginx:1.16.1-alpine
+    links:
+      - postgresql
+      - php-fpm
+    ports:
+      - '80:80'
+    volumes:
+      - ./configs/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ../:/var/www
+    networks:
+      - app-tier
+
+networks:
+  app-tier:
+    driver: bridge

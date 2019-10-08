@@ -1,0 +1,10 @@
+# Ignore IDE settings
+.idea
+# Ignore local .env
+.env
+# Ignore lock files
+*.lock
+# Ignore node dependency packages
+node_modules
+# Ignore composer dependency packages
+vendor
