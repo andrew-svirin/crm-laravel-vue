@@ -2,6 +2,7 @@
 .idea
 # IDE autocomplete helper
 _ide_helper.php
+_ide_helper_models.php
 # Ignore local .env
 .env
 # Ignore lock files

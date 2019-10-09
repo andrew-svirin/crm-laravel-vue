@@ -17,8 +17,9 @@ Goals:
 3. Run docker from the folder `docker`:
 ```bash
 cd docker
-# Use development environment.
-ln -s .env.development .env
+# Copy development environment.
+cp .env.development .env
+# Check .env file and specify for your system.
 # Config docker compose
 docker-compose config
 # To build docker once.
@@ -33,3 +34,4 @@ docker-compose up
 5. Check setup:
  - http://crm.loc
  - ssh://crm.loc -- SSH access to php container, credentials - root:root, port - 52022
+6. Administrator account is registered with credentials admin@example.com:admin

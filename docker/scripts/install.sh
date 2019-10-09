@@ -4,8 +4,10 @@
 # Run it once on project.
 #
 cd project
+# Install composer dependencies.
 composer install
-npm install vue
-#npm install -g @vue/cli
-#npm install -g @vue/cli-service-global
+# Install npm dependencies.
+npm install
+# Install migrations.
+php artisan migrate
 

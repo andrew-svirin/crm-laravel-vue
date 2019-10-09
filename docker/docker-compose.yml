@@ -20,6 +20,8 @@ services:
     build:
       context: ./configs/php-fpm
       dockerfile: Dockerfile
+      args:
+        XDEBUG_HOST: ${XDEBUG_HOST}
     links:
       - postgresql
     ports:

@@ -81355,6 +81355,9 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     path: '/',
     component: _components_home_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }, {
+    path: '/home',
+    component: _components_home_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+  }, {
     path: '/login',
     component: _components_login_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {

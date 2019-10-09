@@ -44,7 +44,7 @@ return [
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
-            'hash' => false,
+            'hash' => true, // use hash for store in database api_token.
         ],
     ],
 

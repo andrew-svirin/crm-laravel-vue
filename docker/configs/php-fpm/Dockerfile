@@ -1,5 +1,8 @@
 FROM php:7.2-fpm-alpine
 
+ARG XDEBUG_HOST
+ARG CONFIG_XDEBUG_PATH=/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
 RUN apk update
 
 RUN apk add --no-cache \
@@ -22,14 +25,16 @@ RUN apk add --no-cache --virtual .build-dependencies \
 # Install xdebug.
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
-RUN echo $'\
-xdebug.default_enable=1\
-\nxdebug.remote_handler=dbgp\
-\nxdebug.remote_enable=1\
-\nxdebug.remote_autostart=1\
-\nxdebug.remote_connect_back=1\
-\nxdebug.remote_port=9001\
-\nxdebug.remote_host=localhost' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo 'xdebug.default_enable=1' >> $CONFIG_XDEBUG_PATH
+RUN echo 'xdebug.remote_handler=dbgp' >> $CONFIG_XDEBUG_PATH
+RUN echo 'xdebug.remote_enable=1' >> $CONFIG_XDEBUG_PATH
+RUN echo 'xdebug.remote_autostart=1' >> $CONFIG_XDEBUG_PATH
+RUN if [ "$XDEBUG_HOST" = "localhost" ]; \
+        then echo 'xdebug.remote_connect_back=1'; \
+        else echo 'xdebug.remote_connect_back=0'; \
+    fi >> $CONFIG_XDEBUG_PATH
+RUN echo 'xdebug.remote_port=9001' >> $CONFIG_XDEBUG_PATH
+RUN echo 'xdebug.remote_host='$XDEBUG_HOST >> $CONFIG_XDEBUG_PATH
 
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 RUN docker-php-ext-install pdo pgsql pdo_pgsql zip
