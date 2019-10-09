@@ -1,9 +1,12 @@
 # Ignore IDE settings
 .idea
+# IDE autocomplete helper
+_ide_helper.php
 # Ignore local .env
 .env
 # Ignore lock files
 *.lock
+package-lock.json
 # Ignore node dependency packages
 node_modules
 # Ignore composer dependency packages
