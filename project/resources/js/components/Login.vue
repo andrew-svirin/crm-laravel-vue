@@ -1,10 +1,13 @@
 <template>
-   <div>
+   <section class="section">
       <div class="col-lg-6 offset-lg-3">
          <h1>Login</h1>
       </div>
       <div class="col-lg-6 offset-lg-3">
-         <b-form @submit="onSubmit" v-if="show">
+         <b-form @submit="onSubmit">
+            <div class="alert alert-danger" v-if="has_error">
+               <p>Has error.</p>
+            </div>
             <b-form-group id="input-group-1" label="Email address:" label-for="input-1">
                <b-form-input
                      id="input-1"
@@ -28,9 +31,11 @@
             <b-button type="submit" variant="primary">Submit</b-button>
          </b-form>
       </div>
-   </div>
+   </section>
 </template>
 <script>
+    import User from '../services/User.js';
+
     export default {
         name: 'Login',
         data() {
@@ -39,13 +44,20 @@
                     email: '',
                     password: '',
                 },
-                show: true
+                has_error: false
             }
         },
         methods: {
-            onSubmit(evt) {
+            async onSubmit(evt) {
                 evt.preventDefault();
-                alert(JSON.stringify(this.form));
+                try {
+                    const response = await User.postLogin(this.form);
+                    this.$store.dispatch('login', response.data.api_token);
+                    this.$router.push('/');
+                } catch (error) {
+                    this.show = true;
+                    console.log('Form error', error);
+                }
             }
         }
     }
