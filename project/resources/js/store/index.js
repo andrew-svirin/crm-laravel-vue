@@ -3,7 +3,10 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
+/**
+ * Defines user states and mutations.
+ */
+export default new Vuex.Store({
     state: {
         api_token: localStorage.getItem('api_token') || null,
         user: {},
@@ -35,5 +38,3 @@ const store = new Vuex.Store({
         },
     }
 });
-
-export default store;

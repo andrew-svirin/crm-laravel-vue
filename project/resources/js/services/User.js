@@ -3,7 +3,7 @@ import Server from '../services/Server.js'
 /**
  * Manage the User operations.
  **/
-const UserService = {
+export default {
 
     /**
      * Make login request.
@@ -11,5 +11,3 @@ const UserService = {
      */
     postLogin: form => Server.makeServer().post('login', form),
 };
-
-export default UserService

@@ -83696,7 +83696,7 @@ __webpack_require__.r(__webpack_exports__);
  * Manage the Server operations.
  **/
 
-var ServerService = {
+/* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Create server instance for requests.
    * @returns {AxiosInstance}
@@ -83718,8 +83718,7 @@ var ServerService = {
       }
     });
   }
-};
-/* harmony default export */ __webpack_exports__["default"] = (ServerService);
+});
 
 /***/ }),
 
@@ -83738,7 +83737,7 @@ __webpack_require__.r(__webpack_exports__);
  * Manage the User operations.
  **/
 
-var UserService = {
+/* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Make login request.
    * @param form
@@ -83746,8 +83745,7 @@ var UserService = {
   postLogin: function postLogin(form) {
     return _services_Server_js__WEBPACK_IMPORTED_MODULE_0__["default"].makeServer().post('login', form);
   }
-};
-/* harmony default export */ __webpack_exports__["default"] = (UserService);
+});
 
 /***/ }),
 
@@ -83774,7 +83772,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__["default"]);
-var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
+/**
+ * Defines user states and mutations.
+ */
+
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
   state: {
     api_token: localStorage.getItem('api_token') || null,
     user: {}
@@ -83851,8 +83853,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_2__["default"].Store({
       return logout;
     }()
   }
-});
-/* harmony default export */ __webpack_exports__["default"] = (store);
+}));
 
 /***/ }),
 

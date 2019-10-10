@@ -8,6 +8,7 @@ import Login from '../components/Login.vue';
 
 const Register = {template: '<div>Register</div>'};
 const Contact = {template: '<div>Contact</div>'};
+
 // Create the router instance and pass the `routes` option.
 const router = new VueRouter({
     mode: 'history',

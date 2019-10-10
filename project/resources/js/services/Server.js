@@ -3,7 +3,7 @@ import axios from 'axios';
 /**
  * Manage the Server operations.
  **/
-const ServerService = {
+export default {
 
     /**
      * Create server instance for requests.
@@ -24,7 +24,4 @@ const ServerService = {
             }
         });
     }
-
 };
-
-export default ServerService
