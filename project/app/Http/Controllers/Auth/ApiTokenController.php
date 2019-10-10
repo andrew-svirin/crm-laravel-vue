@@ -25,7 +25,7 @@ class ApiTokenController extends Controller
       /* @var $user User */
       $user = User::where(['email' => $request->get('email')])->firstOrFail();
       $this->updateUserToken($user);
-      return ['token' => $user->api_token];
+      return ['api_token' => $user->api_token];
    }
 
    /**
@@ -39,7 +39,7 @@ class ApiTokenController extends Controller
       /* @var $user User */
       $user = $request->user();
       $this->updateUserToken($user);
-      return ['token' => $user->api_token];
+      return ['api_token' => $user->api_token];
    }
 
    /**
