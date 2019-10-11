@@ -2176,7 +2176,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2381,7 +2380,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2401,6 +2399,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   mounted: function mounted() {
     // Set the initial number of items
     this.totalRows = this.items.length;
+
+    if (this.$route.query.page) {
+      this.currentPage = this.$route.query.page;
+    }
+
+    if (this.$route.query.size) {
+      this.perPage = this.$route.query.size;
+    }
   },
   methods: {
     onFiltered: function onFiltered(filteredItems) {
@@ -2422,14 +2428,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 response = _context.sent;
+                this.$router.push({
+                  path: '/projects',
+                  query: {
+                    page: context.currentPage,
+                    size: context.perPage
+                  }
+                });
                 return _context.abrupt("return", response.data);
 
-              case 4:
+              case 5:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee);
+        }, _callee, this);
       }));
 
       function loadItems(_x) {
@@ -67942,7 +67955,6 @@ var render = function() {
                   attrs: {
                     "total-rows": _vm.totalRows,
                     "per-page": _vm.perPage,
-                    align: "fill",
                     size: "sm"
                   },
                   model: {
@@ -68186,7 +68198,6 @@ var render = function() {
                   attrs: {
                     "total-rows": _vm.totalRows,
                     "per-page": _vm.perPage,
-                    align: "fill",
                     size: "sm"
                   },
                   model: {

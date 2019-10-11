@@ -36,39 +36,4 @@ class ApplicationTest extends TestCase
       $this->assertArrayHasKey('id', $data);
       return $data;
    }
-
-   /**
-    * Test create project after login.
-    */
-   public function testPostProject(): array
-   {
-      $login = $this->testLogin();
-      $response = $this->postJson('/api/projects/create', [
-         'title' => 'Some title',
-         'description' => 'Some description',
-         'status' => 'On Hold',
-      ], [
-         'Authorization' => 'Bearer ' . $login['api_token'],
-      ]);
-      $content = $response->getContent();
-      $data = json_decode($content, true);
-      $this->assertArrayHasKey('id', $data);
-      return $data;
-   }
-
-   /**
-    * Test load multiple projects after login.
-    * @group test
-    */
-   public function testGetProjects(): array
-   {
-      $login = $this->testLogin();
-      $response = $this->getJson(sprintf('/api/projects?page=%d&size=%d', 1, 5), [
-         'Authorization' => 'Bearer ' . $login['api_token'],
-      ]);
-      $content = $response->getContent();
-      $data = json_decode($content, true);
-      $this->assertIsArray($data);
-      return $data;
-   }
 }

@@ -25,7 +25,6 @@
                      v-model="currentPage"
                      :total-rows="totalRows"
                      :per-page="perPage"
-                     align="fill"
                      size="sm"
                ></b-pagination>
             </b-col>

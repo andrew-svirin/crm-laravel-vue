@@ -25,7 +25,6 @@
                      v-model="currentPage"
                      :total-rows="totalRows"
                      :per-page="perPage"
-                     align="fill"
                      size="sm"
                ></b-pagination>
             </b-col>
@@ -68,7 +67,13 @@
         },
         mounted() {
             // Set the initial number of items
-            this.totalRows = this.items.length
+            this.totalRows = this.items.length;
+            if (this.$route.query.page) {
+                this.currentPage = this.$route.query.page;
+            }
+            if (this.$route.query.size) {
+                this.perPage = this.$route.query.size;
+            }
         },
         methods: {
             onFiltered(filteredItems) {
@@ -78,6 +83,7 @@
             },
             async loadItems(context) {
                 const response = await Project.loadAll(context.currentPage, context.perPage);
+                this.$router.push({path: '/projects', query: {page: context.currentPage, size: context.perPage}});
                 return (response.data);
             },
         },

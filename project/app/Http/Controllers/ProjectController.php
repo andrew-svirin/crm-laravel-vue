@@ -36,10 +36,13 @@ class ProjectController extends Controller
       $page = (int)$request->get('page');
       $size = (int)$request->get('size');
       $projects = Project::forPage($page, $size)->get();
-      $result = [];
+      $result = [
+         'totalCount' => Project::count(),
+         'items' => [],
+      ];
       foreach ($projects as $project)
       {
-         $result[] = [
+         $result['items'][] = [
             'id' => $project->id,
             'title' => $project->title,
             'status' => $project->status,
