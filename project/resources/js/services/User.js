@@ -9,5 +9,5 @@ export default {
      * Make login request.
      * @param form
      */
-    postLogin: form => Server.makeServer().post('login', form),
+    login: form => Server.makeServer().post('login', form),
 };

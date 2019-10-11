@@ -50,7 +50,7 @@
             async onSubmit(evt) {
                 evt.preventDefault();
                 try {
-                    const response = await User.postLogin(this.form);
+                    const response = await User.login(this.form);
                     this.$store.dispatch('login', response.data.api_token);
                     this.$router.push('/');
                 } catch (error) {

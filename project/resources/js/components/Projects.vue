@@ -15,7 +15,7 @@
                         id="initialFilterSelect"
                         v-model="filter"
                         size="sm"
-                        :options="['', 'On Development', 'Estimate', 'On hold']"
+                        :options="filterOption"
                   ></b-form-select>
                </b-form-group>
             </b-col>
@@ -40,6 +40,8 @@
                @filtered="onFiltered"
          >
          </b-table>
+
+         <router-link class="btn btn-primary btn-lg" role="button" to="/projects/create">Create new project</router-link>
       </div>
    </section>
 </template>
@@ -52,17 +54,17 @@
                     {key: 'name', label: 'Project Name'},
                     'status',
                     'members',
-                    {key: 'actions', label: 'Actions'},
                 ],
                 items: [
                     {name: 'Program promotion', status: 'On Development', members: 4},
-                    {name: 'Medical Portal', status: 'Estimate', members: 4},
-                    {name: 'Delivery System', status: 'On hold', members: 1},
+                    {name: 'Medical Portal', status: 'On Estimate', members: 4},
+                    {name: 'Delivery System', status: 'On Hold', members: 1},
                 ],
                 totalRows: 1,
                 currentPage: 1,
                 perPage: 5,
                 filter: null,
+                filterOption: ['', 'On Development', 'On Estimate', 'On Hold'],
             }
         },
         mounted() {

@@ -28,7 +28,29 @@ class ApplicationTest extends TestCase
    public function testGetUser(): array
    {
       $login = $this->testLogin();
-      $response = $this->getJson('/api/user?api_token=' . $login['api_token']);
+      $response = $this->getJson('/api/user', [
+         'Authorization' => 'Bearer ' . $login['api_token'],
+      ]);
+      $content = $response->getContent();
+      $data = json_decode($content, true);
+      $this->assertArrayHasKey('id', $data);
+      return $data;
+   }
+
+   /**
+    * Test create project after login.
+    * @group test
+    */
+   public function testPostProject(): array
+   {
+      $login = $this->testLogin();
+      $response = $this->postJson('/api/projects/create', [
+         'title' => 'Some title',
+         'description' => 'Some description',
+         'status' => 'On Hold',
+      ], [
+         'Authorization' => 'Bearer ' . $login['api_token'],
+      ]);
       $content = $response->getContent();
       $data = json_decode($content, true);
       $this->assertArrayHasKey('id', $data);

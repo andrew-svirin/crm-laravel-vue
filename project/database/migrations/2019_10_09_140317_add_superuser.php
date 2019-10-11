@@ -17,12 +17,12 @@ class AddSuperuser extends Migration
     */
    public function up()
    {
-      $token = Str::random(60);
-      $user = new User();
-      $user->name = 'admin';
-      $user->email = 'admin@example.com';
-      $user->password = Hash::make('admin');
-      $user->api_token = hash('sha256', $token);
+      $user = User::create([
+         'name' => 'admin',
+         'email' => 'admin@example.com',
+         'password' => Hash::make('admin'),
+      ]);
+      $user->api_token = Str::random(60);
       $user->save();
    }
 

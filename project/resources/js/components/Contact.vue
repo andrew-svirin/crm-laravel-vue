@@ -12,7 +12,6 @@
                <b-form-input
                      id="input-1"
                      v-model="form.title"
-                     type="email"
                      required
                      placeholder="Enter title"
                ></b-form-input>

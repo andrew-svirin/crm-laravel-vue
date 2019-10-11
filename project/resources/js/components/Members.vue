@@ -69,7 +69,6 @@
                             return {role: item.role, projects: value}
                         }
                     },
-                    {key: 'actions', label: 'Actions'},
                 ],
                 items: [
                     {name: 'John Doe', role: 'Manager', projects: 4},

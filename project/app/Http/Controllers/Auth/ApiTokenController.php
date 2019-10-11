@@ -11,7 +11,7 @@ class ApiTokenController extends Controller
 {
 
    /**
-    * Use access_token
+    * Login by credentials and response API token.
     * @param Request $request
     * @return array|\Illuminate\Http\JsonResponse
     */
@@ -43,7 +43,7 @@ class ApiTokenController extends Controller
    }
 
    /**
-    * Regenerate user token and store.
+    * Regenerate user's API token and store.
     * @param User $user
     */
    protected function updateUserToken(User $user)
