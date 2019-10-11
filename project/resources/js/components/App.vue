@@ -1,15 +1,14 @@
 <template>
-   <div class="container-fluid">
+   <b-container fluid>
       <navigationMenu></navigationMenu>
       <br/>
       <router-view/>
-   </div>
+   </b-container>
 </template>
 <script>
     import navigationMenu from '../components/Menu.vue';
 
     export default {
-        name: 'App',
         components: {
             navigationMenu
         }

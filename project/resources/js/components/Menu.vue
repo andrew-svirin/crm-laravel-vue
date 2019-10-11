@@ -7,6 +7,8 @@
 
       <b-collapse id="nav-collapse" is-nav>
          <b-navbar-nav>
+            <router-link class="nav-link" to="/members" v-if="isAuthenticated">Members</router-link>
+            <router-link class="nav-link" to="/projects" v-if="isAuthenticated">Projects</router-link>
             <router-link class="nav-link" to="/contact" v-if="isAuthenticated">Contact</router-link>
          </b-navbar-nav>
          <!-- Right aligned nav items -->
@@ -22,7 +24,6 @@
     import {mapGetters} from 'vuex';
 
     export default {
-        name: 'Menu',
         computed: mapGetters(['isAuthenticated']),
         methods: {
             async onLogout(evt) {
