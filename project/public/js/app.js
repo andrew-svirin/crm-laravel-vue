@@ -1983,6 +1983,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['isAuthenticated'])
@@ -67518,6 +67531,30 @@ var render = function() {
         "b-jumbotron",
         { attrs: { header: "CRM", lead: "Manage your projects." } },
         [
+          _c("p", [
+            _vm._v(
+              "\n         System provides ability for Managers to add manage projects and for Developers to vote projects and participate on development process.\n      "
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n         Vote is underlining the estimation incoming projects. After voting Manager can count average time on development.\n      "
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n         When project will be approved by Manager, Developers those voted will be ordered by estimation time.\n         The lowest estimate by Developer will win and Developer will be proposed for begin development.\n      "
+            )
+          ]),
+          _vm._v(" "),
+          _c("p", [
+            _vm._v(
+              "\n         If Developer is busy on current moment, then next Developer in order list will be proposed for development.\n      "
+            )
+          ]),
+          _vm._v(" "),
           !_vm.isAuthenticated
             ? _c(
                 "div",
