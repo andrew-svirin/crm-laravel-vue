@@ -2324,6 +2324,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _services_Project_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/Project.js */ "./resources/js/services/Project.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2371,27 +2380,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       fields: [{
-        key: 'name',
+        key: 'title',
         label: 'Project Name'
       }, 'status', 'members'],
-      items: [{
-        name: 'Program promotion',
-        status: 'On Development',
-        members: 4
-      }, {
-        name: 'Medical Portal',
-        status: 'On Estimate',
-        members: 4
-      }, {
-        name: 'Delivery System',
-        status: 'On Hold',
-        members: 1
-      }],
-      totalRows: 1,
+      items: [],
+      totalRows: null,
       currentPage: 1,
       perPage: 5,
       filter: null,
@@ -2407,7 +2407,37 @@ __webpack_require__.r(__webpack_exports__);
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
-    }
+    },
+    loadItems: function () {
+      var _loadItems = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(context) {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _services_Project_js__WEBPACK_IMPORTED_MODULE_1__["default"].loadAll(context.currentPage, context.perPage);
+
+              case 2:
+                response = _context.sent;
+                return _context.abrupt("return", response.data);
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function loadItems(_x) {
+        return _loadItems.apply(this, arguments);
+      }
+
+      return loadItems;
+    }()
   }
 });
 
@@ -67489,7 +67519,6 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "b-container",
-    { attrs: { fluid: "" } },
     [
       _c("navigationMenu"),
       _vm._v(" "),
@@ -68114,7 +68143,7 @@ var render = function() {
           [
             _c(
               "b-col",
-              { attrs: { sm: "5", md: "6" } },
+              { attrs: { sm: "4", md: "4" } },
               [
                 _c(
                   "b-form-group",
@@ -68151,7 +68180,7 @@ var render = function() {
             _vm._v(" "),
             _c(
               "b-col",
-              { attrs: { sm: "7", md: "6" } },
+              { attrs: { sm: "4", md: "5" } },
               [
                 _c("b-pagination", {
                   attrs: {
@@ -68170,6 +68199,22 @@ var render = function() {
                 })
               ],
               1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-col",
+              { attrs: { sm: "4", md: "3" } },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-primary btn-sm float-right",
+                    attrs: { role: "button", to: "/projects/create" }
+                  },
+                  [_vm._v("Create new project")]
+                )
+              ],
+              1
             )
           ],
           1
@@ -68178,22 +68223,13 @@ var render = function() {
         _c("b-table", {
           attrs: {
             fields: _vm.fields,
-            items: _vm.items,
+            items: _vm.loadItems,
             "current-page": _vm.currentPage,
             "per-page": _vm.perPage,
             filter: _vm.filter
           },
           on: { filtered: _vm.onFiltered }
-        }),
-        _vm._v(" "),
-        _c(
-          "router-link",
-          {
-            staticClass: "btn btn-primary btn-lg",
-            attrs: { role: "button", to: "/projects/create" }
-          },
-          [_vm._v("Create new project")]
-        )
+        })
       ],
       1
     )
@@ -85384,6 +85420,13 @@ __webpack_require__.r(__webpack_exports__);
    */
   create: function create(form) {
     return _services_Server_js__WEBPACK_IMPORTED_MODULE_0__["default"].makeServer().post('projects/create', form);
+  },
+
+  /**
+   * Load multiple projects.
+   */
+  loadAll: function loadAll(page, size, filter) {
+    return _services_Server_js__WEBPACK_IMPORTED_MODULE_0__["default"].makeServer().get('projects?page=' + page + '&size=' + size);
   }
 });
 
@@ -85422,11 +85465,25 @@ __webpack_require__.r(__webpack_exports__);
       headers['Authorization'] = 'Bearer ' + api_token;
     }
 
-    return axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
+    var server = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
       baseURL: url,
       timeout: 1000,
       headers: headers
     });
+    server.interceptors.response.use(function (response) {
+      return response;
+    }, function (error) {
+      var originalRequest = error.config; // Token expired. Redirect user on login page and remove API token.
+
+      if (null !== localStorage.getItem('api_token') && 401 === error.response.status) {
+        localStorage.removeItem('api_token');
+        window.location.path = '/login';
+        originalRequest._retry = true;
+      }
+
+      return Promise.reject(error);
+    });
+    return server;
   }
 });
 

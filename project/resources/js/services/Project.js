@@ -10,4 +10,9 @@ export default {
      * @param form
      */
     create: form => Server.makeServer().post('projects/create', form),
+
+    /**
+     * Load multiple projects.
+     */
+    loadAll: (page, size, filter) => Server.makeServer().get('projects?page=' + page + '&size=' + size),
 };

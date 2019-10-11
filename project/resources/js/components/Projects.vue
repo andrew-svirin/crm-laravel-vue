@@ -3,7 +3,7 @@
       <h1>Projects</h1>
       <div>
          <b-row>
-            <b-col sm="5" md="6">
+            <b-col sm="4" md="4">
                <b-form-group
                      label="Filter"
                      label-cols-sm="3"
@@ -20,7 +20,7 @@
                </b-form-group>
             </b-col>
 
-            <b-col sm="7" md="6">
+            <b-col sm="4" md="5">
                <b-pagination
                      v-model="currentPage"
                      :total-rows="totalRows"
@@ -29,38 +29,37 @@
                      size="sm"
                ></b-pagination>
             </b-col>
+
+            <b-col sm="4" md="3">
+               <router-link class="btn btn-primary btn-sm float-right" role="button" to="/projects/create">Create new project</router-link>
+            </b-col>
          </b-row>
 
          <b-table
                :fields="fields"
-               :items="items"
+               :items="loadItems"
                :current-page="currentPage"
                :per-page="perPage"
                :filter="filter"
                @filtered="onFiltered"
          >
          </b-table>
-
-         <router-link class="btn btn-primary btn-lg" role="button" to="/projects/create">Create new project</router-link>
       </div>
    </section>
 </template>
 <script>
+    import Project from '../services/Project.js';
 
     export default {
         data() {
             return {
                 fields: [
-                    {key: 'name', label: 'Project Name'},
+                    {key: 'title', label: 'Project Name'},
                     'status',
                     'members',
                 ],
-                items: [
-                    {name: 'Program promotion', status: 'On Development', members: 4},
-                    {name: 'Medical Portal', status: 'On Estimate', members: 4},
-                    {name: 'Delivery System', status: 'On Hold', members: 1},
-                ],
-                totalRows: 1,
+                items: [],
+                totalRows: null,
                 currentPage: 1,
                 perPage: 5,
                 filter: null,
@@ -76,6 +75,10 @@
                 // Trigger pagination to update the number of buttons/pages due to filtering
                 this.totalRows = filteredItems.length;
                 this.currentPage = 1
+            },
+            async loadItems(context) {
+                const response = await Project.loadAll(context.currentPage, context.perPage);
+                return (response.data);
             },
         },
     }

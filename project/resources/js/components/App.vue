@@ -1,5 +1,5 @@
 <template>
-   <b-container fluid>
+   <b-container>
       <navigationMenu></navigationMenu>
       <br/>
       <router-view/>

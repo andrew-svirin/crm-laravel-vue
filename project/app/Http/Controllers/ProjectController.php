@@ -26,4 +26,27 @@ class ProjectController extends Controller
       return ['id' => $project->id];
    }
 
+   /**
+    * Load multiple projects by request criteria.
+    * @param Request $request
+    * @return array
+    */
+   public function loadAll(Request $request)
+   {
+      $page = (int)$request->get('page');
+      $size = (int)$request->get('size');
+      $projects = Project::forPage($page, $size)->get();
+      $result = [];
+      foreach ($projects as $project)
+      {
+         $result[] = [
+            'id' => $project->id,
+            'title' => $project->title,
+            'status' => $project->status,
+            'members' => rand(0, 9),
+         ];
+      }
+      return $result;
+   }
+
 }

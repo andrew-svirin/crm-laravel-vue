@@ -39,7 +39,6 @@ class ApplicationTest extends TestCase
 
    /**
     * Test create project after login.
-    * @group test
     */
    public function testPostProject(): array
    {
@@ -54,6 +53,22 @@ class ApplicationTest extends TestCase
       $content = $response->getContent();
       $data = json_decode($content, true);
       $this->assertArrayHasKey('id', $data);
+      return $data;
+   }
+
+   /**
+    * Test load multiple projects after login.
+    * @group test
+    */
+   public function testGetProjects(): array
+   {
+      $login = $this->testLogin();
+      $response = $this->getJson(sprintf('/api/projects?page=%d&size=%d', 1, 5), [
+         'Authorization' => 'Bearer ' . $login['api_token'],
+      ]);
+      $content = $response->getContent();
+      $data = json_decode($content, true);
+      $this->assertIsArray($data);
       return $data;
    }
 }

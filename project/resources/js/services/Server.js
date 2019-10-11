@@ -19,10 +19,26 @@ export default {
         if (api_token) {
             headers['Authorization'] = 'Bearer ' + api_token;
         }
-        return axios.create({
+        let server = axios.create({
             baseURL: url,
             timeout: 1000,
             headers: headers,
         });
+        server.interceptors.response.use(
+            (response) => {
+                return response
+            },
+            (error) => {
+                const originalRequest = error.config;
+                // Token expired. Redirect user on login page and remove API token.
+                if (null !== localStorage.getItem('api_token') && 401 === error.response.status) {
+                    localStorage.removeItem('api_token');
+                    window.location.path = '/login';
+                    originalRequest._retry = true;
+                }
+                return Promise.reject(error);
+            }
+        );
+        return server;
     }
 };
