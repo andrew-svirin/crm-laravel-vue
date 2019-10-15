@@ -51,7 +51,7 @@ class ProjectTest extends TestCase
       $content = $response->getContent();
       $data = json_decode($content, true);
       $this->assertIsArray($data);
-      $this->assertTrue($data['totalCount'] > 0);
+      $this->assertTrue($data['totalRows'] > 0);
       return $data;
    }
 }

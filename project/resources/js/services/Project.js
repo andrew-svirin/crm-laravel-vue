@@ -14,5 +14,5 @@ export default {
     /**
      * Load multiple projects.
      */
-    loadAll: (page, size, filter) => Server.makeServer().get('projects?page=' + page + '&size=' + size),
+    loadAll: (page, size, filter) => Server.makeServer().get('projects' + Server.buildQuery({page: page, size: size, filter: filter})),
 };

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use Illuminate\Http\Request;
+use Response;
 
 class ProjectController extends Controller
 {
@@ -29,27 +30,31 @@ class ProjectController extends Controller
    /**
     * Load multiple projects by request criteria.
     * @param Request $request
-    * @return array
+    * @return \Illuminate\Http\JsonResponse
     */
    public function loadAll(Request $request)
    {
       $page = (int)$request->get('page');
       $size = (int)$request->get('size');
-      $projects = Project::forPage($page, $size)->get();
-      $result = [
-         'totalCount' => Project::count(),
-         'items' => [],
-      ];
-      foreach ($projects as $project)
+      $filter = (string)$request->get('filter');
+
+      $query = Project::query();
+      if ($filter)
       {
-         $result['items'][] = [
+         $query->where('status', '=', $filter);
+      }
+      $count = $query->count();
+      $result = [];
+      foreach ($query->forPage($page, $size)->orderByDesc('created_at')->get() as $project)
+      {
+         $result[] = [
             'id' => $project->id,
             'title' => $project->title,
             'status' => $project->status,
-            'members' => rand(0, 9),
+            'members' => $project->id,
          ];
       }
-      return $result;
+      return Response::json($result)->header('X-Total-Count', $count);
    }
 
 }

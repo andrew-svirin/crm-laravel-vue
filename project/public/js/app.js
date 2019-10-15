@@ -2323,15 +2323,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _services_Project_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/Project.js */ "./resources/js/services/Project.js");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
+/* harmony import */ var _services_Project_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/Project.js */ "./resources/js/services/Project.js");
+//
+//
 //
 //
 //
@@ -2389,68 +2383,78 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         label: 'Project Name'
       }, 'status', 'members'],
       items: [],
-      totalRows: null,
+      totalRows: 0,
       currentPage: 1,
       perPage: 5,
       filter: null,
       filterOption: ['', 'On Development', 'On Estimate', 'On Hold']
     };
   },
-  mounted: function mounted() {
-    // Set the initial number of items
-    this.totalRows = this.items.length;
-
-    if (this.$route.query.page) {
-      this.currentPage = this.$route.query.page;
-    }
-
-    if (this.$route.query.size) {
-      this.perPage = this.$route.query.size;
+  computed: {
+    totalPages: function totalPages() {
+      return parseInt(this.totalRows / this.perPage, 10) || 1;
     }
   },
+  mounted: function mounted() {
+    if (this.$route.query['page']) {
+      this.currentPage = this.$route.query['page'];
+    }
+
+    if (this.$route.query['size']) {
+      this.perPage = this.$route.query['size'];
+    }
+
+    if (this.$route.query['filter']) {
+      this.filter = this.$route.query['filter'];
+    }
+
+    this.fetchItems();
+  },
   methods: {
-    onFiltered: function onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length;
-      this.currentPage = 1;
+    fetchItems: function fetchItems() {
+      var _this = this;
+
+      // Make server request for fetch new items.
+      return _services_Project_js__WEBPACK_IMPORTED_MODULE_0__["default"].loadAll(this.currentPage, this.perPage, this.filter).then(function (response) {
+        _this.totalRows = parseInt(response.headers['x-total-count'], 10);
+        _this.items = response.data;
+        return _this.items;
+      });
     },
-    loadItems: function () {
-      var _loadItems = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(context) {
-        var response;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return _services_Project_js__WEBPACK_IMPORTED_MODULE_1__["default"].loadAll(context.currentPage, context.perPage);
-
-              case 2:
-                response = _context.sent;
-                this.$router.push({
-                  path: '/projects',
-                  query: {
-                    page: context.currentPage,
-                    size: context.perPage
-                  }
-                });
-                return _context.abrupt("return", response.data);
-
-              case 5:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function loadItems(_x) {
-        return _loadItems.apply(this, arguments);
+    linkGen: function linkGen(pageNum) {
+      // Generate pagination links by Page Number.
+      return {
+        path: '/projects',
+        query: {
+          page: pageNum,
+          size: this.perPage,
+          filter: this.filter
+        }
+      };
+    },
+    paginateTable: function paginateTable(value) {
+      // Fires on pagination is changed to trigger event for fetch items.
+      this.currentPage = value;
+      this.fetchItems();
+    },
+    filterTable: function filterTable(value) {
+      // Fires on filter is changed to trigger event for fetch items. Resets current page to 1. Update route.
+      this.filter = value;
+      this.currentPage = 1;
+      this.$router.replace(this.linkGen(this.currentPage));
+      this.fetchItems();
+    }
+  },
+  watch: {
+    $route: function $route(to) {
+      // React to route changes.
+      if (Object.keys(to.query).length === 0) {
+        // Reset properties for main page.
+        this.currentPage = 1;
+        this.filter = null;
+        this.fetchItems();
       }
-
-      return loadItems;
-    }()
+    }
   }
 });
 
@@ -68175,6 +68179,7 @@ var render = function() {
                         size: "sm",
                         options: _vm.filterOption
                       },
+                      on: { change: _vm.filterTable },
                       model: {
                         value: _vm.filter,
                         callback: function($$v) {
@@ -68194,12 +68199,14 @@ var render = function() {
               "b-col",
               { attrs: { sm: "4", md: "5" } },
               [
-                _c("b-pagination", {
+                _c("b-pagination-nav", {
                   attrs: {
-                    "total-rows": _vm.totalRows,
-                    "per-page": _vm.perPage,
+                    "number-of-pages": _vm.totalPages,
+                    "link-gen": _vm.linkGen,
+                    "use-router": "",
                     size: "sm"
                   },
+                  on: { change: _vm.paginateTable },
                   model: {
                     value: _vm.currentPage,
                     callback: function($$v) {
@@ -68233,13 +68240,12 @@ var render = function() {
         _vm._v(" "),
         _c("b-table", {
           attrs: {
+            "show-empty": "",
             fields: _vm.fields,
-            items: _vm.loadItems,
-            "current-page": _vm.currentPage,
+            items: _vm.items,
             "per-page": _vm.perPage,
             filter: _vm.filter
-          },
-          on: { filtered: _vm.onFiltered }
+          }
         })
       ],
       1
@@ -85386,8 +85392,10 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     path: '/members',
     component: _components_Members_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
   }, {
+    name: '/projects',
     path: '/projects',
-    component: _components_Projects_vue__WEBPACK_IMPORTED_MODULE_7__["default"]
+    component: _components_Projects_vue__WEBPACK_IMPORTED_MODULE_7__["default"],
+    props: true
   }, {
     path: '/projects/create',
     component: _components_ProjectsCreate_vue__WEBPACK_IMPORTED_MODULE_8__["default"]
@@ -85437,7 +85445,11 @@ __webpack_require__.r(__webpack_exports__);
    * Load multiple projects.
    */
   loadAll: function loadAll(page, size, filter) {
-    return _services_Server_js__WEBPACK_IMPORTED_MODULE_0__["default"].makeServer().get('projects?page=' + page + '&size=' + size);
+    return _services_Server_js__WEBPACK_IMPORTED_MODULE_0__["default"].makeServer().get('projects' + _services_Server_js__WEBPACK_IMPORTED_MODULE_0__["default"].buildQuery({
+      page: page,
+      size: size,
+      filter: filter
+    }));
   }
 });
 
@@ -85495,6 +85507,26 @@ __webpack_require__.r(__webpack_exports__);
       return Promise.reject(error);
     });
     return server;
+  },
+
+  /**
+   * Build query string by params.
+   * Filter empty params.
+   * @param params
+   * @returns {string}
+   */
+  buildQuery: function buildQuery(params) {
+    var filteredParams = Object.keys(params).filter(function (key) {
+      return params[key] !== null && params[key] !== '' && params[key] !== undefined;
+    }).reduce(function (obj, key) {
+      obj[key] = params[key];
+      return obj;
+    }, {});
+    var esc = encodeURIComponent;
+    var query = Object.keys(filteredParams).map(function (k) {
+      return esc(k) + '=' + esc(filteredParams[k]);
+    }).join('&');
+    return query ? '?' + query : '';
   }
 });
 

@@ -10,12 +10,12 @@ export default {
      * @returns {AxiosInstance}
      */
     makeServer() {
-        let url = 'http://crm.loc/api';
+        const url = 'http://crm.loc/api';
         let headers = {
             'Content-Type': 'application/json; charset=UTF-8',
             'Access-Control-Allow-Origin': '*'
         };
-        let api_token = localStorage.getItem('api_token');
+        const api_token = localStorage.getItem('api_token');
         if (api_token) {
             headers['Authorization'] = 'Bearer ' + api_token;
         }
@@ -40,5 +40,25 @@ export default {
             }
         );
         return server;
+    },
+
+    /**
+     * Build query string by params.
+     * Filter empty params.
+     * @param params
+     * @returns {string}
+     */
+    buildQuery(params) {
+        const filteredParams = Object.keys(params)
+            .filter(key => params[key] !== null && params[key] !== '' && params[key] !== undefined)
+            .reduce((obj, key) => {
+                obj[key] = params[key];
+                return obj;
+            }, {});
+        const esc = encodeURIComponent;
+        const query = Object.keys(filteredParams)
+            .map(k => esc(k) + '=' + esc(filteredParams[k]))
+            .join('&');
+        return query ? '?' + query : '';
     }
 };

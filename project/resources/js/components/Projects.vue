@@ -16,17 +16,20 @@
                         v-model="filter"
                         size="sm"
                         :options="filterOption"
+                        @change="filterTable"
                   ></b-form-select>
                </b-form-group>
             </b-col>
 
             <b-col sm="4" md="5">
-               <b-pagination
+               <b-pagination-nav
                      v-model="currentPage"
-                     :total-rows="totalRows"
-                     :per-page="perPage"
+                     :number-of-pages="totalPages"
+                     :link-gen="linkGen"
+                     use-router
                      size="sm"
-               ></b-pagination>
+                     @change="paginateTable"
+               ></b-pagination-nav>
             </b-col>
 
             <b-col sm="4" md="3">
@@ -35,12 +38,11 @@
          </b-row>
 
          <b-table
+               show-empty
                :fields="fields"
-               :items="loadItems"
-               :current-page="currentPage"
+               :items="items"
                :per-page="perPage"
                :filter="filter"
-               @filtered="onFiltered"
          >
          </b-table>
       </div>
@@ -58,34 +60,73 @@
                     'members',
                 ],
                 items: [],
-                totalRows: null,
+                totalRows: 0,
                 currentPage: 1,
                 perPage: 5,
                 filter: null,
                 filterOption: ['', 'On Development', 'On Estimate', 'On Hold'],
             }
         },
+        computed: {
+            totalPages() {
+                return parseInt(this.totalRows / this.perPage, 10) || 1;
+            },
+        },
         mounted() {
-            // Set the initial number of items
-            this.totalRows = this.items.length;
-            if (this.$route.query.page) {
-                this.currentPage = this.$route.query.page;
+            if (this.$route.query['page']) {
+                this.currentPage = this.$route.query['page'];
             }
-            if (this.$route.query.size) {
-                this.perPage = this.$route.query.size;
+            if (this.$route.query['size']) {
+                this.perPage = this.$route.query['size'];
             }
+            if (this.$route.query['filter']) {
+                this.filter = this.$route.query['filter'];
+            }
+            this.fetchItems();
         },
         methods: {
-            onFiltered(filteredItems) {
-                // Trigger pagination to update the number of buttons/pages due to filtering
-                this.totalRows = filteredItems.length;
-                this.currentPage = 1
+            fetchItems() {
+                // Make server request for fetch new items.
+                return Project.loadAll(this.currentPage, this.perPage, this.filter).then((response) => {
+                    this.totalRows = parseInt(response.headers['x-total-count'], 10);
+                    this.items = response.data;
+                    return this.items;
+                });
             },
-            async loadItems(context) {
-                const response = await Project.loadAll(context.currentPage, context.perPage);
-                this.$router.push({path: '/projects', query: {page: context.currentPage, size: context.perPage}});
-                return (response.data);
+            linkGen(pageNum) {
+                // Generate pagination links by Page Number.
+                return {
+                    path: '/projects',
+                    query: {
+                        page: pageNum,
+                        size: this.perPage,
+                        filter: this.filter,
+                    }
+                }
             },
+            paginateTable(value) {
+                // Fires on pagination is changed to trigger event for fetch items.
+                this.currentPage = value;
+                this.fetchItems();
+            },
+            filterTable(value) {
+                // Fires on filter is changed to trigger event for fetch items. Resets current page to 1. Update route.
+                this.filter = value;
+                this.currentPage = 1;
+                this.$router.replace(this.linkGen(this.currentPage));
+                this.fetchItems();
+            }
+        },
+        watch: {
+            $route(to) {
+                // React to route changes.
+                if (Object.keys(to.query).length === 0) {
+                    // Reset properties for main page.
+                    this.currentPage = 1;
+                    this.filter = null;
+                    this.fetchItems();
+                }
+            }
         },
     }
 </script>
