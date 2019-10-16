@@ -18,11 +18,11 @@ class CreateProjectsTable extends Migration
    {
       Schema::create('projects', function (Blueprint $table)
       {
-         $table->bigIncrements('id');
-         $table->string('title');
+         $table->uuid('id')->primary();
+         $table->string('title')->unique();
          $table->longText('description')->nullable();
          $table->string('status')->nullable();
-         $table->integer('user_id')->nullable();
+         $table->uuid('user_id')->nullable();
          $table->timestamps();
       });
    }

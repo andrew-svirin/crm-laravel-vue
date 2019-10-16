@@ -47,6 +47,7 @@
         data() {
             return {
                 form: {
+                    id: '',
                     title: '',
                     description: '',
                     status: '',
@@ -59,6 +60,8 @@
             async onSubmit(evt) {
                 evt.preventDefault();
                 try {
+                    // Generate UUID for Project.
+                    this.form.id = this.$uuid.v5(this.form.title, '6ba7b810-9dad-11d1-80b4-00c04fd430c8');
                     const response = await Project.create(this.form);
                     console.log('Project was created', response);
                     this.$router.push('/projects');

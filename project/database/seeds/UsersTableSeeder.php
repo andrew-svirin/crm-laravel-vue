@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Ramsey\Uuid\Uuid;
 
 class UsersTableSeeder extends Seeder
 {
@@ -14,9 +15,11 @@ class UsersTableSeeder extends Seeder
       for ($i = 1; $i < 11; $i++)
       {
          $name = 'seeder-' . $i;
+         $email = $name . '@example.com';
          DB::table('users')->insert([
+            'id' => Uuid::uuid5(Uuid::NAMESPACE_DNS, $email),
             'name' => $name,
-            'email' => $name . '@example.com',
+            'email' => $email,
             'password' => Hash::make($name),
          ]);
       }

@@ -12,9 +12,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $description
  * @property string|null $status
  * @property int|null $project_id
+ * @property int|null $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Project|null $project
+ * @property-read \App\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mailstone newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mailstone newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mailstone query()
@@ -31,12 +33,22 @@ class Mailstone extends Model
 {
 
    /**
+    * {@inheritdoc}
+    */
+   protected $keyType = 'uuid';
+
+   /**
+    * {@inheritdoc}
+    */
+   public $incrementing = false;
+
+   /**
     * The attributes that are mass assignable.
     *
     * @var array
     */
    protected $fillable = [
-      'title', 'description', 'status',
+      'id', 'title', 'description', 'status',
    ];
 
    /**
@@ -44,7 +56,7 @@ class Mailstone extends Model
     *
     * @var array
     */
-   protected $guarded = ['project_id'];
+   protected $guarded = ['project_id', 'user_id'];
 
    /**
     * Get the project that owns the mailstone.
@@ -52,5 +64,13 @@ class Mailstone extends Model
    public function project()
    {
       return $this->belongsTo('App\Project');
+   }
+
+   /**
+    * Get the user that created the mailstone.
+    */
+   public function user()
+   {
+      return $this->belongsTo('App\User');
    }
 }

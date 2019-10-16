@@ -18,6 +18,7 @@ class ProjectController extends Controller
    public function create(Request $request)
    {
       $project = Project::create([
+         'id' => $request->get('id'),
          'title' => $request->get('title'),
          'description' => $request->get('description') ?? null,
          'status' => $request->get('status') ?? null,
@@ -57,7 +58,7 @@ class ProjectController extends Controller
     */
    public function load(Request $request, $id)
    {
-      $project = Project::with('user')->findOrFail($id);
+      $project = Project::with(['user', 'mailstones'])->findOrFail($id);
       $projectResource = new ProjectResource($project);
       return $projectResource->toResponse($request);
    }

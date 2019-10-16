@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
 class ProjectTest extends TestCase
@@ -13,8 +14,8 @@ class ProjectTest extends TestCase
    {
       parent::setUp();
       $response = $this->postJson('/api/login', [
-         'email' => 'admin@example.com',
-         'password' => 'admin',
+         'email' => 'test@example.com',
+         'password' => 'test',
       ]);
       $content = $response->getContent();
       $this->login = json_decode($content, true);
@@ -25,8 +26,10 @@ class ProjectTest extends TestCase
     */
    public function testPostProject(): array
    {
+      $title = 'Some title ' . rand(1111111, 7777777);
       $response = $this->postJson('/api/projects/create', [
-         'title' => 'Some title',
+         'id' => Uuid::uuid5(Uuid::NAMESPACE_DNS, $title),
+         'title' => $title,
          'description' => 'Some description',
          'status' => 'On Hold',
       ], [
@@ -61,7 +64,7 @@ class ProjectTest extends TestCase
    public function testGetProject()
    {
       $project = $this->testPostProject();
-      $response = $this->getJson(sprintf('/api/projects/%d', $project['data']['id']), [
+      $response = $this->getJson(sprintf('/api/projects/%s', $project['data']['id']), [
          'Authorization' => 'Bearer ' . $this->login['api_token'],
       ]);
       $content = $response->getContent();

@@ -3,7 +3,7 @@
       <div class="col-lg-6 offset-lg-3">
          <h3>Estimate</h3>
          <b-list-group>
-            <b-list-group-item v-for="mailstone in mailstones" v-bind:key="mailstone.id">
+            <b-list-group-item v-for="mailstone in value.mailstones" v-bind:key="mailstone.id">
                <span>{{ mailstone.title }}</span>
                <span v-if="mailstone.description !== ''">({{ mailstone.description }})</span>
                <span v-if="mailstone.hours !== ''">({{ mailstone.hours }})</span>
@@ -18,27 +18,15 @@
 <script>
 
     export default {
-        data() {
-            return {
-                mailstones: [],
-            }
-        },
-        mounted() {
-            this.fetchEstimate();
-        },
+        props: ['value'],
         methods: {
-            fetchEstimate() {
-                this.mailstones.push({id: 1, title: "Some mailstone 1", description: "Some description", hours: 10});
-                this.mailstones.push({id: 2, title: "Some mailstone 2", description: "Some description", hours: 15});
-                this.mailstones.push({id: 3, title: "Some mailstone 23", description: "", hours: 20});
-            },
             addMailstone(evt) {
                 evt.preventDefault();
-                this.mailstones.push({id: 3, title: "Some mailstone 23", description: "", hours: 20});
+                this.value.mailstones.push({title: "Some mailstone 23", description: "", hours: 20});
                 this.saveEstimate();
             },
             saveEstimate() {
-
+                console.log('saveEstimate');
             }
         },
     }

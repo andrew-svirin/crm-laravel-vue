@@ -5,10 +5,12 @@ import Vue from 'vue';
 import store from './store';
 // Allows use in components routes features.
 import router from './router';
-import BootstrapVue from 'bootstrap-vue';
-
 // Allows use in components bootstrap features.
+import BootstrapVue from 'bootstrap-vue';
 Vue.use(BootstrapVue);
+// Allows use in components UUID features.
+import UUID from 'vue-uuid';
+Vue.use(UUID);
 
 // Register main component. Use it in html page to bind application.
 Vue.component('app', require('./components/App.vue').default);

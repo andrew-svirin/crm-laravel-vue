@@ -13,8 +13,8 @@ class ApplicationTest extends TestCase
    public function testLogin(): array
    {
       $response = $this->postJson('/api/login', [
-         'email' => 'admin@example.com',
-         'password' => 'admin',
+         'email' => 'test@example.com',
+         'password' => 'test',
       ]);
       $content = $response->getContent();
       $data = json_decode($content, true);

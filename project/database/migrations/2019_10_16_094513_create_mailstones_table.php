@@ -18,12 +18,14 @@ class CreateMailstonesTable extends Migration
    {
       Schema::create('mailstones', function (Blueprint $table)
       {
-         $table->bigIncrements('id');
+         $table->uuid('id')->primary();
          $table->string('title');
          $table->longText('description')->nullable();
          $table->string('status')->nullable();
-         $table->integer('project_id')->nullable();
+         $table->uuid('project_id');
+         $table->uuid('user_id');
          $table->timestamps();
+         $table->unique(['title', 'project_id']);
       });
    }
 

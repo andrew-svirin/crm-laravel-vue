@@ -32,12 +32,22 @@ class Project extends Model
 {
 
    /**
+    * {@inheritdoc}
+    */
+   protected $keyType = 'uuid';
+
+   /**
+    * {@inheritdoc}
+    */
+   public $incrementing = false;
+
+   /**
     * The attributes that are mass assignable.
     *
     * @var array
     */
    protected $fillable = [
-      'title', 'description', 'status',
+      'id', 'title', 'description', 'status',
    ];
 
    /**

@@ -6,20 +6,20 @@
       <div class="col-lg-6 offset-lg-3">
          {{ project.description }}
       </div>
-      <estimate></estimate>
+      <estimate v-model="project"></estimate>
    </section>
 </template>
 <script>
     import Project from '../services/Project.js';
-    import estimate from '../components/Estimate.vue';
+    import Estimate from '../components/Estimate.vue';
 
     export default {
         components: {
-            estimate
+            Estimate
         },
         data() {
             return {
-                project: {},
+                project: { id: 1},
             }
         },
         mounted() {

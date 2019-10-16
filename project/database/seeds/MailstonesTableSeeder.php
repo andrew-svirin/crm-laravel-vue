@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Ramsey\Uuid\Uuid;
 
 class MailstonesTableSeeder extends Seeder
 {
@@ -11,20 +12,22 @@ class MailstonesTableSeeder extends Seeder
     */
    public function run()
    {
-      $projects = DB::table('projects')->select(['id'])->get()->all();
+      $projects = DB::table('projects')->select(['id', 'user_id'])->get()->all();
       foreach ($projects as $project)
       {
          for ($i = 1; $i < 4; $i++)
          {
+            $title = 'Mailstone ' . $i . ' of project ' . $project->id;
             DB::table('mailstones')->insert([
-               'title' => 'Mailstone of project ' . $project->id,
+               'id' => Uuid::uuid5(Uuid::NAMESPACE_DNS, $title . '-' . $project->id),
+               'title' => $title,
                'description' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
                'project_id' => $project->id,
+               'user_id' => $project->user_id,
                'status' => $this->getStatus(),
                'created_at' => $this->getCreatedAt()
             ]);
          }
-
       }
    }
 
