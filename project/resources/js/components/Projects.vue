@@ -44,6 +44,9 @@
                :per-page="perPage"
                :filter="filter"
          >
+            <template v-slot:cell(title)="data">
+               <router-link :to="{path:'/projects/'+data.value.id}">{{data.value.title}}</router-link>
+            </template>
          </b-table>
       </div>
    </section>
@@ -55,9 +58,21 @@
         data() {
             return {
                 fields: [
-                    {key: 'title', label: 'Project Name'},
+                    {
+                        key: 'title',
+                        label: 'Project Name',
+                        formatter: (value, key, item) => {
+                            return {id: item.id, title: value};
+                        },
+                    },
                     'status',
-                    'members',
+                    {
+                        key: 'members',
+                        label: 'Members',
+                        formatter: (value, key, item) => {
+                            return item.id;
+                        },
+                    },
                 ],
                 items: [],
                 totalRows: 0,
@@ -88,8 +103,9 @@
             fetchItems() {
                 // Make server request for fetch new items.
                 return Project.loadAll(this.currentPage, this.perPage, this.filter).then((response) => {
-                    this.totalRows = parseInt(response.headers['x-total-count'], 10);
-                    this.items = response.data;
+                    this.totalRows = response.data.meta['total'];
+                    this.items = response.data.data;
+                    this.currentPage = response.data.meta['current_page'];
                     return this.items;
                 });
             },
@@ -118,7 +134,7 @@
             }
         },
         watch: {
-            $route(to) {
+            '$route': function (to) {
                 // React to route changes.
                 if (Object.keys(to.query).length === 0) {
                     // Reset properties for main page.

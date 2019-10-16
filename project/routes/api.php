@@ -21,4 +21,6 @@ Route::post('/projects/create', 'ProjectController@create')->middleware('auth:ap
 
 Route::get('/projects', 'ProjectController@loadAll')->middleware('auth:api');
 
+Route::get('/projects/{id}', 'ProjectController@load')->middleware('auth:api');
+
 Route::post('/login', 'Auth\ApiTokenController@login');

@@ -34,13 +34,12 @@ class ProjectTest extends TestCase
       ]);
       $content = $response->getContent();
       $data = json_decode($content, true);
-      $this->assertArrayHasKey('id', $data);
+      $this->assertArrayHasKey('id', $data['data']);
       return $data;
    }
 
    /**
-    * Test load multiple projects after login.
-    * @group test
+    * Test load multiple projects after create new one.
     */
    public function testGetProjects(): array
    {
@@ -50,8 +49,23 @@ class ProjectTest extends TestCase
       ]);
       $content = $response->getContent();
       $data = json_decode($content, true);
-      $this->assertIsArray($data);
-      $this->assertTrue($data['totalRows'] > 0);
+      $this->assertTrue($data['meta']['current_page'] == 1);
+      $this->assertTrue($data['meta']['total'] > 0);
+      $this->assertNotEmpty($data);
       return $data;
+   }
+
+   /**
+    * Test load project after create new one.
+    */
+   public function testGetProject()
+   {
+      $project = $this->testPostProject();
+      $response = $this->getJson(sprintf('/api/projects/%d', $project['data']['id']), [
+         'Authorization' => 'Bearer ' . $this->login['api_token'],
+      ]);
+      $content = $response->getContent();
+      $data = json_decode($content, true);
+      $this->assertTrue($data['data']['id'] == $project['data']['id']);
    }
 }

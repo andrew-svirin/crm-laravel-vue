@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProjectCollection;
+use App\Http\Resources\ProjectResource;
 use App\Project;
 use Illuminate\Http\Request;
-use Response;
 
 class ProjectController extends Controller
 {
@@ -23,14 +24,14 @@ class ProjectController extends Controller
       ]);
       $project->user_id = $request->user()->id;
       $project->save();
-
-      return ['id' => $project->id];
+      $projectResource = new ProjectResource($project);
+      return $projectResource->toResponse($request);
    }
 
    /**
     * Load multiple projects by request criteria.
     * @param Request $request
-    * @return \Illuminate\Http\JsonResponse
+    * @return array|\Illuminate\Http\JsonResponse
     */
    public function loadAll(Request $request)
    {
@@ -43,18 +44,21 @@ class ProjectController extends Controller
       {
          $query->where('status', '=', $filter);
       }
-      $count = $query->count();
-      $result = [];
-      foreach ($query->forPage($page, $size)->orderByDesc('created_at')->get() as $project)
-      {
-         $result[] = [
-            'id' => $project->id,
-            'title' => $project->title,
-            'status' => $project->status,
-            'members' => $project->id,
-         ];
-      }
-      return Response::json($result)->header('X-Total-Count', $count);
+      $query->orderByDesc('created_at');
+      $projectCollection = new ProjectCollection($query->paginate($size, ['*'], 'page', $page));
+      return $projectCollection->toResponse($request);
    }
 
+   /**
+    * Load project by id with related user.
+    * @param Request $request
+    * @param string $id
+    * @return array|\Illuminate\Http\JsonResponse
+    */
+   public function load(Request $request, $id)
+   {
+      $project = Project::with('user')->findOrFail($id);
+      $projectResource = new ProjectResource($project);
+      return $projectResource->toResponse($request);
+   }
 }

@@ -10,6 +10,7 @@ import Register from '../components/Register.vue';
 import Members from '../components/Members.vue';
 import Projects from '../components/Projects.vue';
 import ProjectCreate from '../components/ProjectsCreate.vue';
+import ProjectView from '../components/ProjectsView.vue';
 
 // Create the router instance and pass the `routes` option.
 const router = new VueRouter({
@@ -23,6 +24,7 @@ const router = new VueRouter({
         {path: '/members', component: Members},
         {name: '/projects', path: '/projects', component: Projects, props: true},
         {path: '/projects/create', component: ProjectCreate},
+        {path: '/projects/:id', component: ProjectView, props: true},
     ]
 });
 
