@@ -5,10 +5,10 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class ApiToken manages api_token column for table users.
+ * Class AddApiTokenToUsersTable manages api_token column for table users.
  * Relates to api authorization API.
  */
-class ApiToken extends Migration
+class AddApiTokenToUsersTable extends Migration
 {
    /**
     * Run the migrations.

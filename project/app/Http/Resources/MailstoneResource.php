@@ -2,14 +2,14 @@
 
 namespace App\Http\Resources;
 
-use App\User;
+use App\Mailstone;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * Class UserResource
- * @mixin User
+ * Class MailstoneResource
+ * @mixin Mailstone
  */
-class UserResource extends JsonResource
+class MailstoneResource extends JsonResource
 {
    /**
     * {@inheritdoc}
@@ -18,8 +18,8 @@ class UserResource extends JsonResource
    {
       return [
          'id' => $this->id,
-         'name' => $this->name,
-         'email' => $this->email,
+         'title' => $this->title,
+         'description' => $this->description,
       ];
    }
 }

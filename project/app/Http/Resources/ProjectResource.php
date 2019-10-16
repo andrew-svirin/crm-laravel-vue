@@ -2,19 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Project;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * Class Project
- * @package App\Http\Resources
- * @property int $id
- * @property string $title
- * @property string|null $description
- * @property string|null $status
- * @property int|null $user_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\User|null $user
+ * Class ProjectResource
+ * @mixin Project
  */
 class ProjectResource extends JsonResource
 {

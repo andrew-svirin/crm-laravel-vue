@@ -18,7 +18,8 @@ class ApiTokenController extends Controller
    public function login(Request $request)
    {
       $credentials = ['email' => $request->get('email'), 'password' => $request->get('password')];
-      if (!($token = auth()->attempt($credentials)))
+
+      if (!auth()->attempt($credentials))
       {
          return response()->json(['error' => 'Unauthorized'], 401);
       }

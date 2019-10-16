@@ -1,14 +1,13 @@
 <?php
 
-
 use App\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Str;
 
 /**
- * Class AddSuperuser adds admin user to the system.
+ * Class InsertSuperuser adds admin user to the system.
  */
-class AddSuperuser extends Migration
+class InsertSuperuser extends Migration
 {
    /**
     * Run the migrations.

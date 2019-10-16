@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\User|null $user
+ * @property-read \App\Mailstone[]|null $mailstones
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Project newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Project query()
@@ -52,5 +53,13 @@ class Project extends Model
    public function user()
    {
       return $this->belongsTo('App\User');
+   }
+
+   /**
+    * Get the mailstones those relates to the project.
+    */
+   public function mailstones()
+   {
+      return $this->hasMany('App\Mailstone');
    }
 }
