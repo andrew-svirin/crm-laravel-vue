@@ -21,7 +21,7 @@ export default {
         }
         let server = axios.create({
             baseURL: url,
-            timeout: 1000,
+            timeout: 30000,
             headers: headers,
         });
         server.interceptors.response.use(

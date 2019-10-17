@@ -19,7 +19,7 @@
         },
         data() {
             return {
-                project: { id: 1},
+                project: {},
             }
         },
         mounted() {

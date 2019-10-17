@@ -2675,9 +2675,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      project: {
-        id: 1
-      }
+      project: {}
     };
   },
   mounted: function mounted() {
@@ -86396,7 +86394,7 @@ __webpack_require__.r(__webpack_exports__);
 
     var server = axios__WEBPACK_IMPORTED_MODULE_0___default.a.create({
       baseURL: url,
-      timeout: 1000,
+      timeout: 30000,
       headers: headers
     });
     server.interceptors.response.use(function (response) {
