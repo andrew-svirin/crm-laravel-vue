@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\User|null $user
  * @property-read \App\Mailstone[]|null $mailstones
+ * @property-read \App\ProjectMember[]|null $members
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Project newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Project newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Project query()
@@ -42,9 +43,7 @@ class Project extends Model
    public $incrementing = false;
 
    /**
-    * The attributes that are mass assignable.
-    *
-    * @var array
+    * {@inheritdoc}
     */
    protected $fillable = [
       'id', 'title', 'description', 'status',
@@ -71,5 +70,13 @@ class Project extends Model
    public function mailstones()
    {
       return $this->hasMany('App\Mailstone');
+   }
+
+   /**
+    * Get the members those relates to the project.
+    */
+   public function members()
+   {
+      return $this->hasMany('App\ProjectMember');
    }
 }

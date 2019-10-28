@@ -18,13 +18,35 @@
    </section>
 </template>
 <script>
+    import ProjectMember from '../services/ProjectMember';
+
     export default {
         props: ['value'],
+        data() {
+            return {
+                form: {
+                    id: '',
+                    project_id: '',
+                    member_id: '',
+                },
+                has_error: false,
+            }
+        },
+        updated() {
+            // Populate form by ProjectMember model attributes.
+            this.form.id = this.$uuid.v5(this.form.member_id + '-' + this.form.project_id, '6ba7b810-9dad-11d1-80b4-00c04fd430c8');
+            this.form.project_id = this.value.id;
+        },
         methods: {
-            invoiceMember(evt) {
-                evt.preventDefault();
-                console.log('invoiceMember');
-                this.saveMembers();
+            async invoiceMember(evt) {
+                try {
+                    evt.preventDefault();
+                    console.log('invoiceMember form', this.form);
+                    const response = await ProjectMember.invoice(this.form);
+                    this.saveMembers();
+                } catch (error) {
+                    console.log('Form error', error);
+                }
             },
             saveMembers() {
                 console.log('saveMembers');

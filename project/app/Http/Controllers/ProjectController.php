@@ -13,7 +13,7 @@ class ProjectController extends Controller
    /**
     * Create new project.
     * @param Request $request
-    * @return array|\Illuminate\Http\JsonResponse
+    * @return array|\Illuminate\Http\JsonResponse|ProjectResource
     */
    public function create(Request $request)
    {
@@ -25,14 +25,13 @@ class ProjectController extends Controller
       ]);
       $project->user_id = $request->user()->id;
       $project->save();
-      $projectResource = new ProjectResource($project);
-      return $projectResource->toResponse($request);
+      return new ProjectResource($project);
    }
 
    /**
     * Load multiple projects by request criteria.
     * @param Request $request
-    * @return array|\Illuminate\Http\JsonResponse
+    * @return array|\Illuminate\Http\JsonResponse|ProjectCollection
     */
    public function loadAll(Request $request)
    {
@@ -46,20 +45,18 @@ class ProjectController extends Controller
          $query->where('status', '=', $filter);
       }
       $query->orderByDesc('created_at');
-      $projectCollection = new ProjectCollection($query->paginate($size, ['*'], 'page', $page));
-      return $projectCollection->toResponse($request);
+      return new ProjectCollection($query->paginate($size, ['*'], 'page', $page));
    }
 
    /**
     * Load project by id with related user.
     * @param Request $request
     * @param string $id
-    * @return array|\Illuminate\Http\JsonResponse
+    * @return array|\Illuminate\Http\JsonResponse|ProjectResource
     */
    public function load(Request $request, $id)
    {
       $project = Project::with(['user', 'mailstones'])->findOrFail($id);
-      $projectResource = new ProjectResource($project);
-      return $projectResource->toResponse($request);
+      return new ProjectResource($project);
    }
 }

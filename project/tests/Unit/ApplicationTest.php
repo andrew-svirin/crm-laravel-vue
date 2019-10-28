@@ -3,37 +3,34 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use Tests\Unit\traits\UserTrait;
 
 class ApplicationTest extends TestCase
 {
 
+   use UserTrait;
+
+   public function setUp(): void
+   {
+      parent::setUp();
+      $this->login();
+   }
+
    /**
     * Test login.
     */
-   public function testLogin(): array
+   public function testLogin()
    {
-      $response = $this->postJson('/api/login', [
-         'email' => 'test@example.com',
-         'password' => 'test',
-      ]);
-      $content = $response->getContent();
-      $data = json_decode($content, true);
-      $this->assertArrayHasKey('api_token', $data);
-      return $data;
+      $this->assertArrayHasKey('api_token', $this->login);
    }
 
    /**
     * Test get user after login.
     */
-   public function testGetUser(): array
+   public function testGetUser()
    {
-      $login = $this->testLogin();
-      $response = $this->getJson('/api/user', [
-         'Authorization' => 'Bearer ' . $login['api_token'],
-      ]);
-      $content = $response->getContent();
-      $data = json_decode($content, true);
-      $this->assertArrayHasKey('id', $data);
-      return $data;
+      $user = $this->loadCurrent();
+      $this->assertArrayHasKey('data', $user);
+      $this->assertArrayHasKey('id', $user['data']);
    }
 }

@@ -24,6 +24,7 @@ class ProjectResource extends JsonResource
          'user_id' => $this->user_id,
          'user' => UserResource::make($this->whenLoaded('user')),
          'mailstones' => MailstoneCollection::make($this->whenLoaded('mailstones')),
+         'members' => ProjectMemberCollection::make($this->whenLoaded('members')),
          'created_at' => $this->created_at,
          'updated_at' => $this->updated_at,
       ];

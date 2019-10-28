@@ -2372,6 +2372,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _services_ProjectMember__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../services/ProjectMember */ "./resources/js/services/ProjectMember.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -2391,14 +2400,65 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['value'],
+  data: function data() {
+    return {
+      form: {
+        id: '',
+        project_id: '',
+        member_id: ''
+      },
+      has_error: false
+    };
+  },
+  updated: function updated() {
+    // Populate form by ProjectMember model attributes.
+    this.form.id = this.$uuid.v5(this.form.member_id + '-' + this.form.project_id, '6ba7b810-9dad-11d1-80b4-00c04fd430c8');
+    this.form.project_id = this.value.id;
+  },
   methods: {
-    invoiceMember: function invoiceMember(evt) {
-      evt.preventDefault();
-      console.log('invoiceMember');
-      this.saveMembers();
-    },
+    invoiceMember: function () {
+      var _invoiceMember = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(evt) {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                evt.preventDefault();
+                console.log('invoiceMember form', this.form);
+                _context.next = 5;
+                return _services_ProjectMember__WEBPACK_IMPORTED_MODULE_1__["default"].invoice(this.form);
+
+              case 5:
+                response = _context.sent;
+                this.saveMembers();
+                _context.next = 12;
+                break;
+
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](0);
+                console.log('Form error', _context.t0);
+
+              case 12:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 9]]);
+      }));
+
+      function invoiceMember(_x) {
+        return _invoiceMember.apply(this, arguments);
+      }
+
+      return invoiceMember;
+    }(),
     saveMembers: function saveMembers() {
       console.log('saveMembers');
     }
@@ -2643,6 +2703,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       statusOptions: ['', 'On Development', 'On Estimate', 'On Hold']
     };
   },
+  updated: function updated() {
+    // Populate form by Project model attributes.
+    this.form.id = this.$uuid.v5(this.form.title, '6ba7b810-9dad-11d1-80b4-00c04fd430c8');
+  },
   methods: {
     onSubmit: function () {
       var _onSubmit = _asyncToGenerator(
@@ -2655,30 +2719,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 evt.preventDefault();
                 _context.prev = 1;
-                // Generate UUID for Project.
-                this.form.id = this.$uuid.v5(this.form.title, '6ba7b810-9dad-11d1-80b4-00c04fd430c8');
-                _context.next = 5;
+                _context.next = 4;
                 return _services_Project_js__WEBPACK_IMPORTED_MODULE_1__["default"].create(this.form);
 
-              case 5:
+              case 4:
                 response = _context.sent;
                 console.log('Project was created', response);
                 this.$router.push('/projects');
-                _context.next = 14;
+                _context.next = 13;
                 break;
 
-              case 10:
-                _context.prev = 10;
+              case 9:
+                _context.prev = 9;
                 _context.t0 = _context["catch"](1);
                 this.show = true;
                 console.log('Form error', _context.t0);
 
-              case 14:
+              case 13:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, this, [[1, 10]]);
+        }, _callee, this, [[1, 9]]);
       }));
 
       function onSubmit(_x) {
@@ -88569,6 +88631,33 @@ __webpack_require__.r(__webpack_exports__);
    */
   load: function load(id) {
     return _services_Server_js__WEBPACK_IMPORTED_MODULE_0__["default"].makeServer().get('projects/' + id);
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/services/ProjectMember.js":
+/*!************************************************!*\
+  !*** ./resources/js/services/ProjectMember.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _services_Server_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/Server.js */ "./resources/js/services/Server.js");
+
+/**
+ * Manage the Project Member operations.
+ **/
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  /**
+   * Make invoice member to the project request.
+   * @param form
+   */
+  invoice: function invoice(form) {
+    return _services_Server_js__WEBPACK_IMPORTED_MODULE_0__["default"].makeServer().post('projects/members/invoice', form);
   }
 });
 

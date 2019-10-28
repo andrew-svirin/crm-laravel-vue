@@ -43,18 +43,14 @@ class Mailstone extends Model
    public $incrementing = false;
 
    /**
-    * The attributes that are mass assignable.
-    *
-    * @var array
+    * {@inheritdoc}
     */
    protected $fillable = [
       'id', 'title', 'description', 'status',
    ];
 
    /**
-    * The attributes that aren't mass assignable.
-    *
-    * @var array
+    * {@inheritdoc}
     */
    protected $guarded = ['project_id', 'user_id'];
 
