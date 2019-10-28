@@ -1,7 +1,10 @@
 <template>
    <section class="section" style="margin-top: 20px">
       <div class="col-lg-6 offset-lg-3">
-         <h3>Estimate</h3>
+         <h3>{{ $t("title.estimate") }}</h3>
+
+         <p>{{ $t("message.estimate") }}</p>
+
          <b-list-group>
             <b-list-group-item v-for="mailstone in value.mailstones" v-bind:key="mailstone.id">
                <span>{{ mailstone.title }}</span>
@@ -10,13 +13,12 @@
             </b-list-group-item>
          </b-list-group>
          <b-form @submit="addMailstone" style="margin-top: 12px">
-            <b-button type="submit" variant="primary">Add Mailstone</b-button>
+            <b-button type="submit" variant="primary">{{ $t("button.new_mailstone") }}</b-button>
          </b-form>
       </div>
    </section>
 </template>
 <script>
-
     export default {
         props: ['value'],
         methods: {

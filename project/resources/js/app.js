@@ -5,11 +5,14 @@ import Vue from 'vue';
 import store from './store';
 // Allows use in components routes features.
 import router from './router';
+// Allows use i18 features.
+import i18n from './i18n';
 // Allows use in components bootstrap features.
 import BootstrapVue from 'bootstrap-vue';
-Vue.use(BootstrapVue);
 // Allows use in components UUID features.
 import UUID from 'vue-uuid';
+
+Vue.use(BootstrapVue);
 Vue.use(UUID);
 
 // Register main component. Use it in html page to bind application.
@@ -22,4 +25,5 @@ const app = new Vue({
     el: '#app',
     router,
     store,
+    i18n,
 }).$mount('#app');

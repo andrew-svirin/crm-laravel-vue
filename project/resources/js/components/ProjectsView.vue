@@ -7,15 +7,18 @@
          {{ project.description }}
       </div>
       <estimate v-model="project"></estimate>
+      <projectMembers v-model="project"></projectMembers>
    </section>
 </template>
 <script>
     import Project from '../services/Project.js';
     import Estimate from '../components/Estimate.vue';
+    import ProjectMembers from '../components/ProjectMembers.vue';
 
     export default {
         components: {
-            Estimate
+            Estimate,
+            ProjectMembers,
         },
         data() {
             return {
