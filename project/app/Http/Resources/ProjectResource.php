@@ -11,22 +11,22 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class ProjectResource extends JsonResource
 {
-   /**
-    * {@inheritdoc}
-    */
-   public function toArray($request): array
-   {
-      return [
-         'id' => $this->id,
-         'title' => $this->title,
-         'description' => $this->description,
-         'status' => $this->status,
-         'user_id' => $this->user_id,
-         'user' => UserResource::make($this->whenLoaded('user')),
-         'mailstones' => MailstoneCollection::make($this->whenLoaded('mailstones')),
-         'members' => ProjectMemberCollection::make($this->whenLoaded('members')),
-         'created_at' => $this->created_at,
-         'updated_at' => $this->updated_at,
-      ];
-   }
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray($request): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'status' => $this->status,
+            'user_id' => $this->user_id,
+            'user' => UserResource::make($this->whenLoaded('user')),
+            'mailstones' => MailstoneCollection::make($this->whenLoaded('mailstones')),
+            'members' => ProjectMemberCollection::make($this->whenLoaded('members')),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
+    }
 }

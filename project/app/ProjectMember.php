@@ -30,39 +30,39 @@ use Illuminate\Database\Eloquent\Model;
 class ProjectMember extends Model
 {
 
-   /**
-    * {@inheritdoc}
-    */
-   protected $keyType = 'uuid';
+    /**
+     * {@inheritdoc}
+     */
+    protected $keyType = 'uuid';
 
-   /**
-    * {@inheritdoc}
-    */
-   public $incrementing = false;
+    /**
+     * {@inheritdoc}
+     */
+    public $incrementing = false;
 
-   /**
-    * {@inheritdoc}
-    */
-   protected $fillable = ['id', 'project_id', 'user_id'];
+    /**
+     * {@inheritdoc}
+     */
+    protected $fillable = ['id', 'project_id', 'user_id'];
 
-   /**
-    * {@inheritdoc}
-    */
-   protected $guarded = ['status'];
+    /**
+     * {@inheritdoc}
+     */
+    protected $guarded = ['status'];
 
-   /**
-    * Get the user that owns the Membership.
-    */
-   public function user()
-   {
-      return $this->belongsTo('App\User');
-   }
+    /**
+     * Get the user that owns the Membership.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 
-   /**
-    * Get the project that owns the Membership.
-    */
-   public function project()
-   {
-      return $this->belongsTo('App\Project');
-   }
+    /**
+     * Get the project that owns the Membership.
+     */
+    public function project()
+    {
+        return $this->belongsTo('App\Project');
+    }
 }

@@ -32,51 +32,55 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
 
-   /**
-    * {@inheritdoc}
-    */
-   protected $keyType = 'uuid';
+    const STATUS_ON_DEVELOP = 'On Development';
+    const STATUS_ON_ESTIMATE = 'On Estimate';
+    const STATUS_ON_HOLD = 'On Hold';
 
-   /**
-    * {@inheritdoc}
-    */
-   public $incrementing = false;
+    /**
+     * {@inheritdoc}
+     */
+    protected $keyType = 'uuid';
 
-   /**
-    * {@inheritdoc}
-    */
-   protected $fillable = [
-      'id', 'title', 'description', 'status',
-   ];
+    /**
+     * {@inheritdoc}
+     */
+    public $incrementing = false;
 
-   /**
-    * The attributes that aren't mass assignable.
-    *
-    * @var array
-    */
-   protected $guarded = ['user_id'];
+    /**
+     * {@inheritdoc}
+     */
+    protected $fillable = [
+        'id', 'title', 'description', 'status',
+    ];
 
-   /**
-    * Get the user that owns the project.
-    */
-   public function user()
-   {
-      return $this->belongsTo('App\User');
-   }
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['user_id'];
 
-   /**
-    * Get the mailstones those relates to the project.
-    */
-   public function mailstones()
-   {
-      return $this->hasMany('App\Mailstone');
-   }
+    /**
+     * Get the user that owns the project.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 
-   /**
-    * Get the members those relates to the project.
-    */
-   public function members()
-   {
-      return $this->hasMany('App\ProjectMember');
-   }
+    /**
+     * Get the mailstones those relates to the project.
+     */
+    public function mailstones()
+    {
+        return $this->hasMany('App\Mailstone');
+    }
+
+    /**
+     * Get the members those relates to the project.
+     */
+    public function members()
+    {
+        return $this->hasMany('App\ProjectMember');
+    }
 }

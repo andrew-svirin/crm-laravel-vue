@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,7 +19,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $api_token
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User newQuery()
@@ -34,36 +36,36 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class User extends Authenticatable
 {
-   use Notifiable;
+    use Notifiable;
 
-   /**
-    * {@inheritdoc}
-    */
-   protected $keyType = 'uuid';
+    /**
+     * {@inheritdoc}
+     */
+    protected $keyType = 'uuid';
 
-   /**
-    * {@inheritdoc}
-    */
-   public $incrementing = false;
+    /**
+     * {@inheritdoc}
+     */
+    public $incrementing = false;
 
-   /**
-    * {@inheritdoc}
-    */
-   protected $fillable = [
-      'id', 'name', 'email', 'password',
-   ];
+    /**
+     * {@inheritdoc}
+     */
+    protected $fillable = [
+        'id', 'name', 'email', 'password',
+    ];
 
-   /**
-    * {@inheritdoc}
-    */
-   protected $hidden = [
-      'password',
-   ];
+    /**
+     * {@inheritdoc}
+     */
+    protected $hidden = [
+        'password',
+    ];
 
-   /**
-    * {@inheritdoc}
-    */
-   protected $casts = [
-      'email_verified_at' => 'datetime',
-   ];
+    /**
+     * {@inheritdoc}
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 }

@@ -11,17 +11,17 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class MailstoneResource extends JsonResource
 {
-   /**
-    * {@inheritdoc}
-    */
-   public function toArray($request): array
-   {
-      return [
-         'id' => $this->id,
-         'title' => $this->title,
-         'description' => $this->description,
-         'project_id' => $this->project_id,
-         'user_id' => $this->user_id,
-      ];
-   }
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray($request): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'project_id' => $this->project_id,
+            'user_id' => $this->user_id,
+        ];
+    }
 }

@@ -11,15 +11,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class UserResource extends JsonResource
 {
-   /**
-    * {@inheritdoc}
-    */
-   public function toArray($request): array
-   {
-      return [
-         'id' => $this->id,
-         'name' => $this->name,
-         'email' => $this->email,
-      ];
-   }
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray($request): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+        ];
+    }
 }

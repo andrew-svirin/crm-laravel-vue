@@ -32,41 +32,41 @@ use Illuminate\Database\Eloquent\Model;
 class Mailstone extends Model
 {
 
-   /**
-    * {@inheritdoc}
-    */
-   protected $keyType = 'uuid';
+    /**
+     * {@inheritdoc}
+     */
+    protected $keyType = 'uuid';
 
-   /**
-    * {@inheritdoc}
-    */
-   public $incrementing = false;
+    /**
+     * {@inheritdoc}
+     */
+    public $incrementing = false;
 
-   /**
-    * {@inheritdoc}
-    */
-   protected $fillable = [
-      'id', 'title', 'description', 'status',
-   ];
+    /**
+     * {@inheritdoc}
+     */
+    protected $fillable = [
+        'id', 'title', 'description', 'status',
+    ];
 
-   /**
-    * {@inheritdoc}
-    */
-   protected $guarded = ['project_id', 'user_id'];
+    /**
+     * {@inheritdoc}
+     */
+    protected $guarded = ['project_id', 'user_id'];
 
-   /**
-    * Get the project that owns the mailstone.
-    */
-   public function project()
-   {
-      return $this->belongsTo('App\Project');
-   }
+    /**
+     * Get the project that owns the mailstone.
+     */
+    public function project()
+    {
+        return $this->belongsTo('App\Project');
+    }
 
-   /**
-    * Get the user that created the mailstone.
-    */
-   public function user()
-   {
-      return $this->belongsTo('App\User');
-   }
+    /**
+     * Get the user that created the mailstone.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }
