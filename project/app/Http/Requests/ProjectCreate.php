@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Project;
+use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -13,14 +13,14 @@ use Illuminate\Validation\Rule;
  * @property-read string|null $description
  * @property-read string|null $status
  */
-class CreateProject extends FormRequest
+class ProjectCreate extends FormRequest
 {
     /**
      * {@inheritdoc}
      */
     public function authorize()
     {
-        return true;
+        return \Auth::user();
     }
 
     /**

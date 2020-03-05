@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -12,12 +12,12 @@ class ApiTokenController extends Controller
 
     /**
      * Login by credentials and response API token.
-     * @param Request $request
+     * @param \App\Http\Requests\Auth\ApiTokenLogin $request
      * @return array|\Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    public function login(\App\Http\Requests\Auth\ApiTokenLogin $request)
     {
-        $credentials = ['email' => $request->get('email'), 'password' => $request->get('password')];
+        $credentials = ['email' => $request->email, 'password' => $request->password];
 
         if (!auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -34,10 +34,9 @@ class ApiTokenController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return array
      */
-    public function update(Request $request)
+    public function update()
     {
-        /* @var $user User */
-        $user = $request->user();
+        $user = \Auth::user();
         $this->updateUserToken($user);
         return ['api_token' => $user->api_token];
     }

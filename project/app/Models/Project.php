@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,19 +14,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\User|null $user
- * @property-read \App\Mailstone[]|null $mailstones
- * @property-read \App\ProjectMember[]|null $members
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Project newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Project newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Project query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Project whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Project whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Project whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Project whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Project whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Project whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Project whereUserId($value)
+ * @property-read User|null $user
+ * @property-read Mailstone[]|null $mailstones
+ * @property-read ProjectMember[]|null $members
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Project whereUserId($value)
  * @mixin \Eloquent
  */
 class Project extends Model
@@ -65,7 +65,7 @@ class Project extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -73,7 +73,7 @@ class Project extends Model
      */
     public function mailstones()
     {
-        return $this->hasMany('App\Mailstone');
+        return $this->hasMany(Mailstone::class);
     }
 
     /**
@@ -81,6 +81,6 @@ class Project extends Model
      */
     public function members()
     {
-        return $this->hasMany('App\ProjectMember');
+        return $this->hasMany(ProjectMember::class);
     }
 }

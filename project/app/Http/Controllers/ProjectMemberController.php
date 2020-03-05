@@ -3,26 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProjectMemberResource;
-use App\ProjectMember;
-use Illuminate\Http\Request;
+use App\Models\ProjectMember;
 
 class ProjectMemberController extends Controller
 {
 
     /**
      * Invoice user to the project.
-     * @param Request $request
+     * @param \App\Http\Requests\ProjectMemberInvoice $request
      * @return array|\Illuminate\Http\JsonResponse|ProjectMemberResource
      */
-    public function invoice(Request $request)
+    public function invoice(\App\Http\Requests\ProjectMemberInvoice $request)
     {
         // Make ProjectMember entity.
-        $membership = ProjectMember::create([
-            'id' => $request->get('id'),
-            'user_id' => $request->get('user_id'),
-            'project_id' => $request->get('project_id'),
+        $membership = new ProjectMember();
+        $membership->fill([
+            'id' => $request->id,
+            'user_id' => $request->user_id,
+            'project_id' => $request->project_id,
         ]);
-        $membership->status = 'Invoiced';
+        $membership->status = ProjectMember::STATUS_INVOICED;
         $membership->save();
         // Send an email.
         return new ProjectMemberResource($membership);

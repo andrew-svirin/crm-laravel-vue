@@ -22,6 +22,5 @@ class UsersTableSeeder extends Seeder
                 'password' => Hash::make($name),
             ]);
         }
-
     }
 }

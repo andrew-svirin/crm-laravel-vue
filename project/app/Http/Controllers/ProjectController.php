@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateProject;
 use App\Http\Resources\ProjectCollection;
 use App\Http\Resources\ProjectResource;
-use App\Project;
-use Illuminate\Http\Request;
+use App\Models\Project;
 
 class ProjectController extends Controller
 {
 
     /**
      * Create new project.
-     * @param CreateProject $request
+     * @param \App\Http\Requests\ProjectCreate $request
      * @return array|\Illuminate\Http\JsonResponse|ProjectResource
      */
-    public function create(CreateProject $request)
+    public function create(\App\Http\Requests\ProjectCreate $request)
     {
         $project = new Project();
         $project->fill([
@@ -32,30 +30,25 @@ class ProjectController extends Controller
 
     /**
      * Load multiple projects by request criteria.
-     * @param Request $request
+     * @param \App\Http\Requests\Paginated $request
      * @return array|\Illuminate\Http\JsonResponse|ProjectCollection
      */
-    public function loadAll(Request $request)
+    public function loadAll(\App\Http\Requests\Paginated $request)
     {
-        $page = (int)$request->get('page');
-        $size = (int)$request->get('size');
-        $filter = (string)$request->get('filter');
-
         $query = Project::query();
-        if ($filter) {
-            $query->where('status', '=', $filter);
+        if ($request->filter) {
+            $query->where('status', '=', $request->filter);
         }
         $query->orderByDesc('created_at');
-        return new ProjectCollection($query->paginate($size, ['*'], 'page', $page));
+        return new ProjectCollection($query->paginate($request->size, ['*'], 'page', $request->page));
     }
 
     /**
      * Load project by id with related user.
-     * @param Request $request
      * @param string $id
      * @return array|\Illuminate\Http\JsonResponse|ProjectResource
      */
-    public function load(Request $request, $id)
+    public function load($id)
     {
         $project = Project::with(['user', 'mailstones'])->findOrFail($id);
         return new ProjectResource($project);
